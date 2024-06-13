@@ -1,8 +1,11 @@
 defmodule PortfolioWeb.ProjectController do
   use PortfolioWeb, :controller
 
-  def new(conn, _params) do
+  alias Portfolio.Who_are_you.Questions
 
-    render(conn, :new)
+  def new(conn, _params) do
+    changeset = Questions.changeset(%Questions{}, %{})
+    render(conn, :new, changeset: changeset)
   end
+
 end
