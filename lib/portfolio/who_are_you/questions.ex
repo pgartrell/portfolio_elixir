@@ -13,6 +13,6 @@ defmodule Portfolio.Who_are_you.Questions do
   def changeset(questions, attrs) do
     questions
     |> cast(attrs, [:query, :answer])
-    |> validate_required([:query, :answer])
+    |> validate_required([:query])
   end
 end
