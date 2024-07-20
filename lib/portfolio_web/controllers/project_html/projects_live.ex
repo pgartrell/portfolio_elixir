@@ -19,13 +19,6 @@ defmodule PortfolioWeb.ProjectsLive do
         {:ok, fetch(socket)}
     end
 
-    # def handle_event("create", %{"query" => query}, socket) do
-    #     Who_are_you.create_questions(%{query: query})
-    #     socket = assign(socket, questions: Who_are_you.list_question(), active: %Questions{})
-    #     LiveViewTodoWeb.Endpoint.broadcast_from(self(), @topic, "update", socket.assigns)
-    #     IO.inspect(socket)
-    #     {:noreply, socket}
-    # end
 
     def handle_event("create", %{"questions" => %{"query" => query}}, socket) do
         Who_are_you.create_questions(%{query: query})
@@ -33,10 +26,14 @@ defmodule PortfolioWeb.ProjectsLive do
         {:noreply, fetch(socket)}
     end
 
-    # @impl true
-    # def handle_info(%{event: "update", payload: %{questions: questions}}, socket) do
-    #     {:noreply, assign(socket, questions: questions)}
-    # end
+    def handle_event("delete_question", %{"id" => id}, socket) do
+        question = Who_are_you.get_questions!(id)
+        Who_are_you.delete_questions(question)
+
+        socket = assign(socket, items: Who_are_you.list_question())
+        # TodoLiveViewWeb.Endpoint.broadcast(@todos_topic, "todos_updated", socket.assigns)
+        {:noreply, socket}
+    end
 
     def fetch(socket) do
         assign(socket, questions: Who_are_you.list_question())
@@ -63,10 +60,15 @@ defmodule PortfolioWeb.ProjectsLive do
                                 <p class="question_item">
                                 <%= question.query %>
                                 </p>
-                                <button class="delete_btn">
-                                Delete
-                                </button>
                             </li>
+                        <button 
+                            class="delete_btn"
+                            phx-click="delete_question"
+                            phx-value-id={question.id}
+                           
+                        >
+                            Delete
+                        </button>
                         <% end %>
                     </ul>
                 </div>
