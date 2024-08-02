@@ -13,7 +13,7 @@ defmodule PortfolioWeb.ProjectsLive do
                     table_title: "Ask me a Question",
                     changeset: Who_are_you.change_questions(%Questions{}),
                     questions: Who_are_you.list_question(),
-                    query: %Questions{},
+                    query: %Questions{}
                 )
 
         {:ok, fetch(socket)}
@@ -27,12 +27,16 @@ defmodule PortfolioWeb.ProjectsLive do
     end
 
     def handle_event("delete_question", %{"id" => id}, socket) do
+        questions = Who_are_you.list_question
         question = Who_are_you.get_questions!(id)
-        Who_are_you.delete_questions(question)
 
-        socket = assign(socket, items: Who_are_you.list_question())
-        # TodoLiveViewWeb.Endpoint.broadcast(@todos_topic, "todos_updated", socket.assigns)
-        {:noreply, socket}
+        with {:ok, deleted_question} <- Who_are_you.delete_questions(question) do
+            questions = Enum.filter(questions, fn question -> question.id != deleted_question.id end)
+
+            socket = assign(socket, :questions, questions)
+            # TodoLiveViewWeb.Endpoint.broadcast(@todos_topic, "todos_updated", socket.assigns)
+            {:noreply, socket}
+        end
     end
 
     def fetch(socket) do
