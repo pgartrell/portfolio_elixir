@@ -4,8 +4,6 @@ defmodule PortfolioWeb.ProjectsLive do
     alias Portfolio.Who_are_you
     alias Portfolio.Who_are_you.Questions
 
-    # @topic "live"
-
     def mount(_params, _session, socket) do
         socket = 
             assign(
@@ -34,7 +32,6 @@ defmodule PortfolioWeb.ProjectsLive do
             questions = Enum.filter(questions, fn question -> question.id != deleted_question.id end)
 
             socket = assign(socket, :questions, questions)
-            # TodoLiveViewWeb.Endpoint.broadcast(@todos_topic, "todos_updated", socket.assigns)
             {:noreply, socket}
         end
     end
@@ -58,23 +55,29 @@ defmodule PortfolioWeb.ProjectsLive do
                     </span>
                 </span>
                 <div>
-                    <ul>
-                        <%= for question <- @questions do%>
-                            <li id={"question-#{question.id}"}>
-                                <p class="question_item">
-                                <%= question.query %>
-                                </p>
-                            </li>
-                        <button 
-                            class="delete_btn"
-                            phx-click="delete_question"
-                            phx-value-id={question.id}
-                           
-                        >
-                            Delete
-                        </button>
-                        <% end %>
-                    </ul>
+                    <table class="table-auto">
+                        <thead>
+                            <tr>             
+                                <th>
+                                    <%= for question <- @questions do%>
+                                        <div id={"question-#{question.id}"}>
+                                            <p class="question_item">
+                                            <%= question.query %>
+                                            </p>
+                                        </div>
+                                    <button 
+                                        class="delete_btn"
+                                        phx-click="delete_question"
+                                        phx-value-id={question.id}
+                                    
+                                    >
+                                        Delete
+                                    </button>
+                                    <% end %>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </h1>
         """
