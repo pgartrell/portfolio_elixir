@@ -54,17 +54,34 @@ defmodule PortfolioWeb.ProjectsLive do
                         </.form>
                     </span>
                 </span>
-                <div>
-                    <table class="table-auto">
+                <div  class="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
+                    <table  class="w-full text-left table-auto min-w-max">
                         <thead>
+                        <tr>
+                            <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                                <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                                    Question
+                                </p>
+                            </th>
+                            <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                                <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                                    Answer
+                                </p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
                             <tr>             
-                                <th>
+                                
                                     <%= for question <- @questions do%>
+                                    <td class="p-4 border-b border-blue-gray-50">
                                         <div id={"question-#{question.id}"}>
                                             <p class="question_item">
                                             <%= question.query %>
                                             </p>
                                         </div>
+                                    </td>
+                                    <td>
                                     <button 
                                         class="delete_btn"
                                         phx-click="delete_question"
@@ -73,10 +90,11 @@ defmodule PortfolioWeb.ProjectsLive do
                                     >
                                         Delete
                                     </button>
+                                     </td>
                                     <% end %>
-                                </th>
+                               
                             </tr>
-                        </thead>
+                        </tbody>
                     </table>
                 </div>
             </h1>
